@@ -16,7 +16,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-your-secret-key'
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*',
                  '.onrender.com', 'localhost']  # For development only
@@ -48,7 +48,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Add this
+   'whitenoise.middleware.WhiteNoiseMiddleware',  # Add this
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -71,6 +71,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
             ],
         },
     },
@@ -141,7 +142,7 @@ SOCIALACCOUNT_AUTO_SIGNUP = True
 SOCIALACCOUNT_EMAIL_REQUIRED = False
 SOCIALACCOUNT_EMAIL_VERIFICATION = 'none'
 
-# Social account providers
+# Social account providers - FIXED VERSION
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'SCOPE': [
@@ -152,8 +153,9 @@ SOCIALACCOUNT_PROVIDERS = {
             'access_type': 'online',
         },
         'OAUTH_PKCE_ENABLED': True,
+        
     },
-    'facebook': {  # Add Facebook configuration
+    'facebook': {
         'METHOD': 'oauth2',
         'SDK_URL': '//connect.facebook.net/{locale}/sdk.js',
         'SCOPE': ['email', 'public_profile'],
@@ -171,8 +173,12 @@ SOCIALACCOUNT_PROVIDERS = {
             'email',
         ],
         'EXCHANGE_TOKEN': True,
-        'LOCALE_FUNC': 'path.to.callable',
         'VERIFIED_EMAIL': False,
         'VERSION': 'v13.0',
+        'APP': {
+            'client_id': os.environ.get('FACEBOOK_CLIENT_ID', ''),
+            'secret': os.environ.get('FACEBOOK_CLIENT_SECRET', ''),
+        }
     }
 }
+
