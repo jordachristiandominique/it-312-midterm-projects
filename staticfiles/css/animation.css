@@ -1,0 +1,241 @@
+/* Page Load Animation */
+.page-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #6552ff 0%, #9f7aea 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 0.8s ease-out;
+}
+
+.page-loader.hide {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.loader-spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top: 3px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Progress Bar */
+.progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #6552ff, #9f7aea);
+    z-index: 9999;
+    transition: width 0.3s ease;
+}
+
+/* Smooth Scroll */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Enhanced existing animations */
+header {
+    opacity: 0;
+    transform: translateY(-50px);
+    animation: slideDown 1s ease-out forwards;
+    animation-delay: 0.5s;
+}
+
+@keyframes slideDown {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero .container h1 {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 1.2s ease-out forwards;
+    animation-delay: 0.8s;
+}
+
+.hero .container p {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s ease-out forwards;
+    animation-delay: 1.2s;
+}
+
+.cta-buttons {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s ease-out forwards;
+    animation-delay: 1.5s;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Section animations */
+.content-section {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.8s ease;
+}
+
+.content-section.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Team cards animation */
+.team-card {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+}
+
+.team-card.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.team-card:nth-child(1) {
+    transition-delay: 0.1s;
+}
+
+.team-card:nth-child(2) {
+    transition-delay: 0.2s;
+}
+
+.team-card:nth-child(3) {
+    transition-delay: 0.3s;
+}
+
+/* Project items animation */
+.project-item {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+}
+
+.project-item.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.project-item:nth-child(1) {
+    transition-delay: 0.1s;
+}
+
+.project-item:nth-child(2) {
+    transition-delay: 0.2s;
+}
+
+.project-item:nth-child(3) {
+    transition-delay: 0.3s;
+}
+
+.project-item:nth-child(4) {
+    transition-delay: 0.4s;
+}
+
+.project-item:nth-child(5) {
+    transition-delay: 0.5s;
+}
+
+.project-item:nth-child(6) {
+    transition-delay: 0.6s;
+}
+
+/* Enhanced hover effects for existing elements */
+.team-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(101, 82, 255, 0.2);
+}
+
+.project-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(101, 82, 255, 0.15);
+}
+
+/* Footer animation */
+.footer-section {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease;
+}
+
+.footer-section.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.footer-section:nth-child(1) {
+    transition-delay: 0.1s;
+}
+
+.footer-section:nth-child(2) {
+    transition-delay: 0.2s;
+}
+
+.footer-section:nth-child(3) {
+    transition-delay: 0.3s;
+}
+
+/* Button shine effect */
+.cta-buttons .btn,
+.nav-forms .btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-buttons .btn::before,
+.nav-forms .btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.6s;
+}
+
+.cta-buttons .btn:hover::before,
+.nav-forms .btn:hover::before {
+    left: 100%;
+}
+
+/* Image loading animation */
+.team-card img {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.5s ease;
+}
+
+.team-card img.loaded {
+    opacity: 1;
+    transform: scale(1);
+}

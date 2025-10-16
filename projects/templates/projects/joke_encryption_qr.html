@@ -1,0 +1,770 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joke Encryption with QR - IT-312 Projects</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-5px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-top: 60px;
+        }
+
+        .project-title {
+            color: white;
+            font-size: 3rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .project-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .main-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            overflow: hidden;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .joke-section {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 30px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            border-radius: 15px;
+            color: white;
+            overflow: hidden;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .joke-display {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            margin: 10px;
+        }
+
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .encryption-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .encryption-card {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: auto;
+            min-height: 450px;
+        }
+
+        .encryption-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .encryption-method {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 20px;
+            text-align: center;
+            align-self: center;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .card-description {
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .encrypted-display {
+            background: #2d3748;
+            color: #e2e8f0;
+            font-family: 'Courier New', monospace;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            word-break: break-all;
+            max-height: 200px;
+            overflow-y: auto;
+            text-align: left;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .qr-container {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            border: 2px solid #cbd5e0;
+            text-align: center;
+        }
+
+        .qr-container h4 {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .qr-code {
+            margin: 20px auto;
+            display: inline-block;
+            padding: 15px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .qr-container p {
+            color: #4a5568;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .decrypt-section {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            text-align: center;
+        }
+
+        .decrypt-section h3 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .decrypt-section p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .decrypt-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .btn-decrypt {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-decrypt:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .encryption-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 25px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .encryption-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            .encryption-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+
+            .project-title {
+                font-size: 2.2rem;
+            }
+
+            .main-card {
+                padding: 25px;
+            }
+
+            .joke-section {
+                padding: 25px;
+            }
+
+            .encryption-card {
+                padding: 25px;
+                min-height: auto;
+            }
+
+            .decrypt-buttons {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .project-title {
+                font-size: 1.8rem;
+            }
+
+            .main-card {
+                padding: 20px;
+            }
+
+            .encryption-card {
+                padding: 20px;
+            }
+
+            .btn {
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a href="{% url 'home' %}" class="back-btn">← Back to Dashboard</a>
+
+    <div class="container">
+        <div class="header">
+            <h1 class="project-title">🔐 Joke Encryption with QR</h1>
+            <p class="project-subtitle">Fetch jokes from API, encrypt using ATBASH/Caesar/Vigenère, and generate QR
+                codes</p>
+        </div>
+
+        <div class="main-card">
+            <!-- Joke Fetching Section -->
+            <div class="joke-section">
+                <h2>🎲 Chuck Norris Joke Generator</h2>
+                <p>Click the button to fetch a random joke from the API and encrypt it using three different methods</p>
+
+                <button class="btn" onclick="fetchJokeAndEncrypt()" id="fetchBtn">🚀 Fetch Joke & Encrypt</button>
+
+                <div class="joke-display" id="originalJoke">
+                    Click the button above to fetch a joke from the Chuck Norris API!
+                </div>
+            </div>
+
+            <!-- Encryption Results Grid -->
+            <div class="encryption-grid">
+                <!-- ATBASH Cipher -->
+                <div class="encryption-card">
+                    <div class="encryption-method">🔤 ATBASH Cipher</div>
+                    <h3 class="card-title">Hebrew Substitution Cipher</h3>
+                    <p class="card-description">Ancient cipher that replaces A↔Z, B↔Y, C↔X, etc. Simple substitution
+                        method used in ancient Hebrew texts.</p>
+
+                    <div class="encrypted-display" id="atbashEncrypted" style="display: none;"></div>
+
+                    <div class="qr-container" id="atbashQR" style="display: none;">
+                        <h4>📱 ATBASH QR Code</h4>
+                        <div class="qr-code">
+                            <canvas id="atbashQRCanvas" width="200" height="200"></canvas>
+                        </div>
+                        <p><small>Scan to get ATBASH encrypted joke</small></p>
+                    </div>
+                </div>
+
+                <!-- Caesar Cipher -->
+                <div class="encryption-card">
+                    <div class="encryption-method">🏛️ Caesar Cipher</div>
+                    <h3 class="card-title">Classical Shift Cipher</h3>
+                    <p class="card-description">Shifts each letter by a fixed number of positions in the alphabet. Used
+                        by Julius Caesar for military communications!</p>
+
+                    <div class="form-group">
+                        <label for="caesarShift">Shift Value (1-25):</label>
+                        <input type="number" id="caesarShift" class="form-control" value="3" min="1" max="25">
+                    </div>
+
+                    <div class="encrypted-display" id="caesarEncrypted" style="display: none;"></div>
+
+                    <div class="qr-container" id="caesarQR" style="display: none;">
+                        <h4>📱 Caesar QR Code</h4>
+                        <div class="qr-code">
+                            <canvas id="caesarQRCanvas" width="200" height="200"></canvas>
+                        </div>
+                        <p><small>Scan to get Caesar encrypted joke</small></p>
+                    </div>
+                </div>
+
+                <!-- Vigenère Cipher -->
+                <div class="encryption-card">
+                    <div class="encryption-method">🔑 Vigenère Cipher</div>
+                    <h3 class="card-title">Polyalphabetic Cipher</h3>
+                    <p class="card-description">Uses a keyword to create multiple Caesar ciphers. Much stronger than
+                        single shift encryption methods!</p>
+
+                    <div class="form-group">
+                        <label for="vigenereKey">Keyword:</label>
+                        <input type="text" id="vigenereKey" class="form-control" value="CRYPTO"
+                            placeholder="Enter keyword">
+                    </div>
+
+                    <div class="encrypted-display" id="vigenereEncrypted" style="display: none;"></div>
+
+                    <div class="qr-container" id="vigenereQR" style="display: none;">
+                        <h4>📱 Vigenère QR Code</h4>
+                        <div class="qr-code">
+                            <canvas id="vigenereQRCanvas" width="200" height="200"></canvas>
+                        </div>
+                        <p><small>Scan to get Vigenère encrypted joke</small></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- QR Scanner & Decryptor Section -->
+            <div class="decrypt-section">
+                <h3>🔍 QR Code Scanner & Decryptor</h3>
+                <p>Paste encrypted text from QR code to decrypt and view the original joke</p>
+
+                <div class="form-group">
+                    <label for="encryptedInput" style="color: white;">Encrypted Text from QR Code:</label>
+                    <textarea id="encryptedInput" class="form-control" rows="4"
+                        placeholder="Paste encrypted text here or scan QR code..."></textarea>
+                </div>
+
+                <div class="decrypt-buttons">
+                    <button class="btn-decrypt" onclick="decryptText('atbash')">🔤 Decrypt ATBASH</button>
+                    <button class="btn-decrypt" onclick="decryptText('caesar')">🏛️ Decrypt Caesar</button>
+                    <button class="btn-decrypt" onclick="decryptText('vigenere')">🔑 Decrypt Vigenère</button>
+                </div>
+
+                <div class="joke-display" id="decryptedResult" style="background: rgba(255,255,255,0.2); color: white;">
+                    Decrypted joke will appear here...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include QR Code library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
+
+    <script>
+        let currentJoke = '';
+
+        // ATBASH Cipher - A↔Z, B↔Y, C↔X, etc.
+        function atbashCipher(text) {
+            return text.split('').map(char => {
+                if (char.match(/[A-Za-z]/)) {
+                    const isUpper = char === char.toUpperCase();
+                    const code = char.toUpperCase().charCodeAt(0);
+                    const newCode = 90 - (code - 65); // Z=90, A=65
+                    const newChar = String.fromCharCode(newCode);
+                    return isUpper ? newChar : newChar.toLowerCase();
+                }
+                return char;
+            }).join('');
+        }
+
+        // Caesar Cipher - Shift by N positions
+        function caesarCipher(text, shift) {
+            return text.split('').map(char => {
+                if (char.match(/[a-zA-Z]/)) {
+                    const code = char.charCodeAt(0);
+                    const isUpper = code >= 65 && code <= 90;
+                    const base = isUpper ? 65 : 97;
+                    return String.fromCharCode(((code - base + shift) % 26) + base);
+                }
+                return char;
+            }).join('');
+        }
+
+        // Vigenère Cipher - Uses keyword for polyalphabetic substitution
+        function vigenereCipher(text, keyword, decrypt = false) {
+            keyword = keyword.toUpperCase().replace(/[^A-Z]/g, '');
+            if (!keyword) keyword = 'CRYPTO';
+
+            let result = '';
+            let keyIndex = 0;
+
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+
+                if (char.match(/[A-Za-z]/)) {
+                    const isUpper = char === char.toUpperCase();
+                    const charCode = char.toUpperCase().charCodeAt(0) - 65;
+                    const keyChar = keyword[keyIndex % keyword.length];
+                    const keyCode = keyChar.charCodeAt(0) - 65;
+
+                    let newCharCode;
+                    if (decrypt) {
+                        newCharCode = (charCode - keyCode + 26) % 26;
+                    } else {
+                        newCharCode = (charCode + keyCode) % 26;
+                    }
+
+                    const newChar = String.fromCharCode(newCharCode + 65);
+                    result += isUpper ? newChar : newChar.toLowerCase();
+                    keyIndex++;
+                } else {
+                    result += char;
+                }
+            }
+
+            return result;
+        }
+
+        // Fetch joke and encrypt with all three methods
+        async function fetchJokeAndEncrypt() {
+            const fetchBtn = document.getElementById('fetchBtn');
+            const originalJokeDiv = document.getElementById('originalJoke');
+
+            // Show loading state
+            fetchBtn.disabled = true;
+            fetchBtn.textContent = '⏳ Fetching joke...';
+            originalJokeDiv.textContent = '⏳ Fetching joke from Chuck Norris API...';
+
+            // Hide all encrypted results
+            hideAllEncryption();
+
+            try {
+                // Fetch joke from Chuck Norris API
+                const response = await fetch('https://api.chucknorris.io/jokes/random');
+                if (!response.ok) throw new Error('API request failed');
+
+                const data = await response.json();
+                currentJoke = data.value;
+
+                // Display original joke
+                originalJokeDiv.innerHTML = `<strong></strong>"${currentJoke}"`;
+
+                // Encrypt with all three methods
+                encryptWithATBASH(currentJoke);
+                encryptWithCaesar(currentJoke);
+                encryptWithVigenere(currentJoke);
+
+                console.log('✅ Joke fetched and encrypted:', currentJoke);
+
+            } catch (error) {
+                console.error('❌ Error fetching joke:', error);
+                originalJokeDiv.textContent = '❌ Failed to fetch joke. Please try again.';
+            } finally {
+                // Reset button
+                fetchBtn.disabled = false;
+                fetchBtn.textContent = '🎲 Get Another Joke';
+            }
+        }
+
+        // Hide all encryption displays
+        function hideAllEncryption() {
+            ['atbash', 'caesar', 'vigenere'].forEach(method => {
+                document.getElementById(`${method}Encrypted`).style.display = 'none';
+                document.getElementById(`${method}QR`).style.display = 'none';
+            });
+        }
+
+        // Encrypt with ATBASH
+        function encryptWithATBASH(joke) {
+            const encrypted = atbashCipher(joke);
+            const encryptedDiv = document.getElementById('atbashEncrypted');
+
+            encryptedDiv.innerHTML = `<strong>🔤 ATBASH Encrypted:</strong><br>${encrypted}`;
+            encryptedDiv.style.display = 'block';
+
+            generateQRCode('atbash', encrypted);
+            document.getElementById('atbashQR').style.display = 'block';
+        }
+
+        // Encrypt with Caesar
+        function encryptWithCaesar(joke) {
+            const shift = parseInt(document.getElementById('caesarShift').value) || 3;
+            const encrypted = caesarCipher(joke, shift);
+            const encryptedDiv = document.getElementById('caesarEncrypted');
+
+            encryptedDiv.innerHTML = `<strong>🏛️ Caesar Encrypted (Shift ${shift}):</strong><br>${encrypted}`;
+            encryptedDiv.style.display = 'block';
+
+            generateQRCode('caesar', encrypted, shift);
+            document.getElementById('caesarQR').style.display = 'block';
+        }
+
+        // Encrypt with Vigenère
+        function encryptWithVigenere(joke) {
+            const keyword = document.getElementById('vigenereKey').value.trim() || 'CRYPTO';
+            const encrypted = vigenereCipher(joke, keyword);
+            const encryptedDiv = document.getElementById('vigenereEncrypted');
+
+            encryptedDiv.innerHTML = `<strong>🔑 Vigenère Encrypted (Key: ${keyword}):</strong><br>${encrypted}`;
+            encryptedDiv.style.display = 'block';
+
+            generateQRCode('vigenere', encrypted, null, keyword);
+            document.getElementById('vigenereQR').style.display = 'block';
+        }
+
+        // Generate QR code with ONLY encrypted text (FIXED)
+        function generateQRCode(method, encryptedText, shift = null, keyword = null) {
+            const canvas = document.getElementById(`${method}QRCanvas`);
+
+            // Store metadata separately for internal use
+            window[`${method}Metadata`] = {
+                method: method,
+                shift: shift,
+                keyword: keyword,
+                timestamp: new Date().toISOString()
+            };
+
+            // Generate QR code with ONLY the encrypted text
+            const qr = new QRious({
+                element: canvas,
+                value: encryptedText, // Only encrypted text, no JSON!
+                size: 200,
+                background: 'white',
+                foreground: getMethodColor(method)
+            });
+
+            console.log(`✅ ${method.toUpperCase()} QR Code generated with encrypted text only:`, encryptedText);
+        }
+
+        // Get color for each encryption method
+        function getMethodColor(method) {
+            const colors = {
+                'atbash': '#e74c3c',
+                'caesar': '#f39c12',
+                'vigenere': '#9b59b6'
+            };
+            return colors[method] || '#667eea';
+        }
+
+        // Decrypt text from QR scanner (UPDATED)
+        function decryptText(method) {
+            const encryptedInput = document.getElementById('encryptedInput').value.trim();
+            const resultElement = document.getElementById('decryptedResult');
+
+            if (!encryptedInput) {
+                resultElement.innerHTML = '❌ Please paste encrypted text first!';
+                return;
+            }
+
+            let decryptedText = '';
+            let textToDecrypt = encryptedInput;
+
+            try {
+                // First, check if it's JSON (old format compatibility)
+                try {
+                    const parsed = JSON.parse(encryptedInput);
+                    if (parsed.encrypted && parsed.method) {
+                        if (parsed.method !== method) {
+                            resultElement.innerHTML = `⚠️ This text was encrypted with <strong>${parsed.method.toUpperCase()}</strong>, but you're trying to decrypt with <strong>${method.toUpperCase()}</strong>!<br>Use the correct decryption method.`;
+                            return;
+                        }
+                        textToDecrypt = parsed.encrypted;
+                        // Use metadata from JSON for decryption
+                        if (method === 'caesar' && parsed.shift) {
+                            decryptedText = caesarCipher(textToDecrypt, 26 - parsed.shift);
+                        } else if (method === 'vigenere' && parsed.keyword) {
+                            decryptedText = vigenereCipher(textToDecrypt, parsed.keyword, true);
+                        } else if (method === 'atbash') {
+                            decryptedText = atbashCipher(textToDecrypt);
+                        }
+                    }
+                } catch (e) {
+                    // Not JSON, treat as plain encrypted text
+                    // Decrypt based on method using current form values
+                    switch (method) {
+                        case 'atbash':
+                            decryptedText = atbashCipher(textToDecrypt); // ATBASH is its own inverse
+                            break;
+                        case 'caesar':
+                            const shift = parseInt(document.getElementById('caesarShift').value) || 3;
+                            decryptedText = caesarCipher(textToDecrypt, 26 - shift); // Reverse shift
+                            break;
+                        case 'vigenere':
+                            const keyword = document.getElementById('vigenereKey').value.trim() || 'CRYPTO';
+                            decryptedText = vigenereCipher(textToDecrypt, keyword, true); // Decrypt mode
+                            break;
+                    }
+                }
+
+                resultElement.innerHTML = `
+                    <div style="text-align: left;">
+                        <strong>🔓 Decrypted with ${method.toUpperCase()}:</strong><br>
+                        <div style="background: rgba(255,255,255,0.3); padding: 20px; border-radius: 8px; margin-top: 15px; font-size: 1.1rem;">
+                            "${decryptedText}"
+                        </div>
+                    </div>
+                `;
+
+                console.log(`✅ Successfully decrypted with ${method}:`, decryptedText);
+
+            } catch (error) {
+                console.error(`❌ Decryption error:`, error);
+                resultElement.innerHTML = `❌ Failed to decrypt with ${method.toUpperCase()}. Make sure the text is correctly encrypted and try the right decryption method.`;
+            }
+        }
+
+        // Add these event listeners for real-time updates
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log('🔐 Joke Encryption with QR initialized!');
+            console.log('📚 Available ciphers: ATBASH, Caesar, Vigenère');
+
+            // Real-time keyword changes
+            document.getElementById('vigenereKey').addEventListener('input', function () {
+                if (currentJoke) {
+                    console.log('🔑 Keyword changed, re-encrypting with Vigenère...');
+                    encryptWithVigenere(currentJoke);
+                }
+            });
+
+            // Real-time Caesar shift changes
+            document.getElementById('caesarShift').addEventListener('input', function () {
+                if (currentJoke) {
+                    console.log('🏛️ Shift changed, re-encrypting with Caesar...');
+                    encryptWithCaesar(currentJoke);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

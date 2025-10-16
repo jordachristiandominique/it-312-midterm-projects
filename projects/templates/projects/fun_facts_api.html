@@ -1,0 +1,449 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fun Facts API - IT-312 Projects</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-5px);
+        }
+
+        .project-title {
+            color: white;
+            font-size: 3rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .project-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .main-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .demo-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .demo-title {
+            font-size: 2rem;
+            color: #150546;
+            margin-bottom: 20px;
+        }
+
+        .fun-fact-container {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .fun-fact-text {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            color: #2d3748;
+            text-align: center;
+            max-width: 600px;
+        }
+
+        .loading {
+            color: #6552ff;
+            font-style: italic;
+        }
+
+        .get-fact-btn {
+            background: linear-gradient(135deg, #6552ff 0%, #5a47e6 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(101, 82, 255, 0.3);
+        }
+
+        .get-fact-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(101, 82, 255, 0.4);
+        }
+
+        .get-fact-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .api-selector {
+            margin-bottom: 20px;
+        }
+
+        .api-selector label {
+            display: block;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .api-select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            background: white;
+        }
+
+        .api-select:focus {
+            outline: none;
+            border-color: #6552ff;
+        }
+
+        .tech-details {
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .tech-title {
+            font-size: 1.8rem;
+            color: #150546;
+            margin-bottom: 20px;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .tech-item {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #6552ff;
+        }
+
+        .tech-item h4 {
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .tech-item p {
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        .code-section {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .code-title {
+            color: #81e6d9;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .code {
+            font-family: 'Courier New', monospace;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+
+        .fact-count {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: #6552ff;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .error-message {
+            color: #e53e3e;
+            background: #fed7d7;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #e53e3e;
+        }
+
+        .success-message {
+            color: #38a169;
+            background: #c6f6d5;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #38a169;
+        }
+
+        @media (max-width: 1040px) {
+            .container {
+                padding-top: 50px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a href="{% url 'home' %}" class="back-btn">← Back to Dashboard</a>
+
+    <div class="container">
+        <div class="header">
+            <h1 class="project-title">🌐 Fun Facts API System</h1>
+            <p class="project-subtitle">Discover amazing facts from around the world using real-time API calls</p>
+        </div>
+
+        <div class="main-card">
+            <!-- Interactive Demo Section -->
+            <div class="demo-section">
+                <h2 class="demo-title">Interactive Fun Facts Generator</h2>
+
+                <!-- API Selector -->
+                <div class="api-selector">
+                    <label for="apiSelect">Choose Your Fun Facts Source:</label>
+                    <select id="apiSelect" class="api-select">
+                        <option value="uselessfacts">Useless Facts API</option>
+                        <option value="catfacts">Cat Facts API</option>
+                        <option value="numberfacts">Number Facts API</option>
+                        <option value="chucknorris">Chuck Norris Facts API</option>
+                    </select>
+                </div>
+
+                <!-- Fun Fact Display -->
+                <div class="fun-fact-container">
+                    <div class="fact-count" id="factCount">Facts: 0</div>
+                    <div class="fun-fact-text" id="factText">
+                        Click the button below to get your first amazing fun fact! 🎯
+                    </div>
+                </div>
+
+                <!-- Get Fact Button -->
+                <button class="get-fact-btn" id="getFactBtn" onclick="getFunFact()">
+                    🎲 Get Random Fun Fact
+                </button>
+
+                <!-- Messages -->
+                <div id="messageArea"></div>
+            </div>
+
+            <!-- Technical Details -->
+            <!-- <div class="tech-details">
+                <h3 class="tech-title">🔧 Technical Implementation</h3>
+
+                <div class="tech-grid">
+                    <div class="tech-item">
+                        <h4>API Integration</h4>
+                        <p>Uses JavaScript Fetch API to make HTTP requests to external fun facts APIs with proper error
+                            handling.</p>
+                    </div>
+
+                    <div class="tech-item">
+                        <h4>JSON Processing</h4>
+                        <p>Parses JSON responses from different API endpoints and extracts the relevant fact data.</p>
+                    </div>
+
+                    <div class="tech-item">
+                        <h4>Dynamic UI</h4>
+                        <p>Updates the user interface dynamically without page refresh using DOM manipulation.</p>
+                    </div>
+
+                    <div class="tech-item">
+                        <h4>Error Handling</h4>
+                        <p>Implements comprehensive error handling for network failures and API limitations.</p>
+                    </div>
+                </div>
+
+            </div> -->
+        </div>
+    </div>
+
+    <script>
+        let factCounter = 0;
+
+        // API endpoints configuration
+        const APIs = {
+            uselessfacts: {
+                url: 'https://uselessfacts.jsph.pl/random.json?language=en',
+                textField: 'text'
+            },
+            catfacts: {
+                url: 'https://catfact.ninja/fact',
+                textField: 'fact'
+            },
+            numberfacts: {
+                url: 'http://numbersapi.com/random',
+                textField: null // Returns plain text
+            },
+            chucknorris: {
+                url: 'https://api.chucknorris.io/jokes/random',
+                textField: 'value'
+            }
+        };
+
+        async function getFunFact() {
+            const btn = document.getElementById('getFactBtn');
+            const factText = document.getElementById('factText');
+            const messageArea = document.getElementById('messageArea');
+            const selectedAPI = document.getElementById('apiSelect').value;
+
+            // Clear previous messages
+            messageArea.innerHTML = '';
+
+            // Disable button and show loading
+            btn.disabled = true;
+            btn.textContent = '🔄 Loading...';
+            factText.innerHTML = '<span class="loading">Fetching an amazing fun fact for you...</span>';
+
+            try {
+                const apiConfig = APIs[selectedAPI];
+                let response, data, factContent;
+
+                if (selectedAPI === 'numberfacts') {
+                    // Number facts API returns plain text
+                    response = await fetch(apiConfig.url);
+                    factContent = await response.text();
+                } else {
+                    // Other APIs return JSON
+                    response = await fetch(apiConfig.url);
+                    data = await response.json();
+                    factContent = data[apiConfig.textField];
+                }
+
+                if (response.ok && factContent) {
+                    // Display the fact
+                    factText.textContent = factContent;
+
+                    // Update counter
+                    factCounter++;
+                    document.getElementById('factCount').textContent = `Facts: ${factCounter}`;
+
+                    // Show success message
+                    showMessage(`Fun fact loaded from ${getAPIName(selectedAPI)}!`, 'success');
+
+                } else {
+                    throw new Error('Invalid response from API');
+                }
+
+            } catch (error) {
+                console.error('Error fetching fun fact:', error);
+                factText.textContent = 'Oops! Unable to fetch a fun fact right now. Please try again or select a different API source.';
+                showMessage('Error: Could not fetch fun fact. Please try again.', 'error');
+            } finally {
+                // Re-enable button
+                btn.disabled = false;
+                btn.textContent = '🎲 Get Random Fun Fact';
+            }
+        }
+
+        function getAPIName(apiKey) {
+            const names = {
+                uselessfacts: 'Useless Facts',
+                catfacts: 'Cat Facts',
+                numberfacts: 'Number Facts',
+                chucknorris: 'Chuck Norris Facts'
+            };
+            return names[apiKey] || 'Unknown API';
+        }
+
+        function showMessage(message, type) {
+            const messageArea = document.getElementById('messageArea');
+            const messageClass = type === 'success' ? 'success-message' : 'error-message';
+
+            messageArea.innerHTML = `
+                <div class="${messageClass}">
+                    ${message}
+                </div>
+            `;
+
+            // Auto-hide message after 3 seconds
+            setTimeout(() => {
+                messageArea.innerHTML = '';
+            }, 3000);
+        }
+
+        // Load initial fun fact when page loads
+        document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(() => {
+                getFunFact();
+            }, 1000);
+        });
+
+        // Allow Enter key to trigger fact generation
+        document.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                getFunFact();
+            }
+        });
+    </script>
+</body>
+
+</html>

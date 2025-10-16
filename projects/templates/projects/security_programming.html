@@ -1,0 +1,1534 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Cipher Application - IT-312 Projects</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-5px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-top: 60px;
+        }
+
+        .project-title {
+            color: white;
+            font-size: 3rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .project-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        /* Authentication Section Styles */
+        .auth-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            max-width: 500px;
+            margin: 0 auto 30px;
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 30px;
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 5px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 15px 25px;
+            text-align: center;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #64748b;
+        }
+
+        .auth-tab.active {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(30, 60, 114, 0.3);
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #1e3c72;
+            box-shadow: 0 0 0 4px rgba(30, 60, 114, 0.1);
+        }
+
+        /* Password Container Styles */
+        .password-container {
+            position: relative;
+        }
+
+        .password-container .form-control {
+            padding-right: 50px;
+            /* Make room for the eye icon */
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #64748b;
+            padding: 5px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .password-toggle:hover {
+            color: #1e3c72;
+            background: rgba(30, 60, 114, 0.1);
+        }
+
+        .password-toggle svg {
+            width: 20px;
+            height: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .password-requirements {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .requirement {
+            color: #64748b;
+            margin: 5px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .requirement.valid {
+            color: #10b981;
+        }
+
+        .requirement.invalid {
+            color: #ef4444;
+        }
+
+        .btn-auth {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-auth:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(30, 60, 114, 0.3);
+        }
+
+        .btn-auth:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+
+        .alert-warning {
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fcd34d;
+        }
+
+        /* Main Application Styles */
+        .main-app {
+            display: none;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-welcome {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .cipher-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .cipher-card {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cipher-card:hover {
+            border-color: #1e3c72;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(30, 60, 114, 0.2);
+        }
+
+        .cipher-card.active {
+            border-color: #1e3c72;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+        }
+
+        .cipher-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .cipher-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .cipher-description {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .cipher-workspace {
+            display: none;
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        .cipher-workspace.active {
+            display: block;
+        }
+
+        .workspace-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .workspace-title {
+            font-size: 2rem;
+            color: #1e3c72;
+            margin-bottom: 10px;
+        }
+
+        .operation-tabs {
+            display: flex;
+            margin-bottom: 30px;
+            background: white;
+            border-radius: 10px;
+            padding: 5px;
+        }
+
+        .operation-tab {
+            flex: 1;
+            padding: 15px 25px;
+            text-align: center;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #64748b;
+        }
+
+        .operation-tab.active {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+        }
+
+        .textarea-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .textarea-container {
+            position: relative;
+        }
+
+        .textarea-label {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .cipher-textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            resize: vertical;
+        }
+
+        .cipher-textarea:focus {
+            outline: none;
+            border-color: #1e3c72;
+            box-shadow: 0 0 0 4px rgba(30, 60, 114, 0.1);
+        }
+
+        .cipher-controls {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .controls-row {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .btn-process {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-process:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(30, 60, 114, 0.3);
+        }
+
+        .btn-clear {
+            background: #64748b;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-clear:hover {
+            background: #475569;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .textarea-group {
+                grid-template-columns: 1fr;
+            }
+
+            .controls-row {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .project-title {
+                font-size: 2.2rem;
+            }
+
+            .auth-container {
+                padding: 25px;
+            }
+        }
+
+        /* Add this to your existing <style> section after line 347 */
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            /* Header mobile */
+            .back-btn {
+                position: static;
+                top: 10px;
+                left: 10px;
+                padding: 8px 15px;
+                font-size: 0.9rem;
+                z-index: 1000;
+            }
+
+            .header {
+                margin-bottom: 25px;
+                padding-top: 50px;
+            }
+
+            .project-title {
+                font-size: 2rem;
+                margin-bottom: 10px;
+                line-height: 1.2;
+            }
+
+            .project-subtitle {
+                font-size: 1rem;
+                padding: 0 10px;
+            }
+
+            /* Auth container mobile */
+            .auth-container {
+                padding: 25px;
+                margin-bottom: 20px;
+            }
+
+            .auth-tabs {
+                margin-bottom: 20px;
+            }
+
+            .auth-tab {
+                padding: 12px 20px;
+                font-size: 0.9rem;
+            }
+
+            .form-group {
+                margin-bottom: 20px;
+            }
+
+            .form-control {
+                padding: 12px 15px;
+                font-size: 0.9rem;
+            }
+
+            .password-container .form-control {
+                padding-right: 45px;
+            }
+
+            .password-toggle {
+                right: 12px;
+            }
+
+            .password-toggle svg {
+                width: 18px;
+                height: 18px;
+            }
+
+            .btn-auth {
+                padding: 12px;
+                font-size: 1rem;
+            }
+
+            /* Main app mobile */
+            .main-app {
+                padding: 25px;
+            }
+
+            .user-welcome {
+                padding: 20px;
+                margin-bottom: 25px;
+            }
+
+            .user-welcome h2 {
+                font-size: 1.3rem;
+                margin-bottom: 8px;
+            }
+
+            .user-welcome p {
+                font-size: 0.9rem;
+            }
+
+            .logout-btn {
+                padding: 8px 16px;
+                font-size: 0.85rem;
+            }
+
+            /* Cipher selection mobile */
+            .cipher-selection {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                margin-bottom: 25px;
+            }
+
+            .cipher-card {
+                padding: 20px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+            .cipher-card:hover {
+                transform: translateY(-2px);
+            }
+
+            .cipher-icon {
+                font-size: 2.5rem;
+                margin-bottom: 12px;
+            }
+
+            .cipher-name {
+                font-size: 1.2rem;
+                margin-bottom: 8px;
+            }
+
+            .cipher-description {
+                font-size: 0.85rem;
+            }
+
+            /* Cipher workspace mobile */
+            .cipher-workspace {
+                padding: 20px;
+                margin-top: 20px;
+                border-radius: 15px;
+            }
+
+            .workspace-header {
+                margin-bottom: 25px;
+            }
+
+            .workspace-title {
+                font-size: 1.5rem;
+                margin-bottom: 8px;
+            }
+
+            .workspace-header p {
+                font-size: 0.9rem;
+            }
+
+            /* Operation tabs mobile */
+            .operation-tabs {
+                margin-bottom: 20px;
+            }
+
+            .operation-tab {
+                padding: 12px 20px;
+                font-size: 0.9rem;
+            }
+
+            /* Textarea group mobile */
+            .textarea-group {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                margin-bottom: 20px;
+            }
+
+            .textarea-label {
+                font-size: 0.9rem;
+                margin-bottom: 8px;
+            }
+
+            .cipher-textarea {
+                min-height: 120px;
+                padding: 12px;
+                font-size: 0.9rem;
+            }
+
+            /* Controls mobile */
+            .cipher-controls {
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+
+            .controls-row {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+
+            .controls-row label {
+                font-size: 0.9rem;
+                margin-bottom: 5px;
+            }
+
+            .controls-row input {
+                width: 100%;
+                max-width: 150px;
+                padding: 10px;
+                margin-bottom: 10px;
+            }
+
+            .btn-process,
+            .btn-clear {
+                width: 100%;
+                padding: 12px;
+                font-size: 1rem;
+            }
+
+            .btn-process {
+                margin-bottom: 10px;
+            }
+
+            /* Password requirements mobile */
+            .password-requirements {
+                padding: 12px;
+                margin-top: 8px;
+            }
+
+            .requirement {
+                font-size: 0.8rem;
+                margin: 3px 0;
+            }
+
+            /* Alert mobile */
+            .alert {
+                padding: 12px;
+                font-size: 0.9rem;
+                margin-bottom: 15px;
+            }
+
+            /* Smooth scroll behavior for mobile */
+            html {
+                scroll-behavior: smooth;
+            }
+
+            /* Add scroll offset for fixed header */
+            .cipher-workspace {
+                scroll-margin-top: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 5px;
+            }
+
+            .auth-container,
+            .main-app {
+                padding: 20px;
+            }
+
+            .project-title {
+                font-size: 1.7rem;
+            }
+
+            .project-subtitle {
+                font-size: 0.9rem;
+                padding: 0 5px;
+            }
+
+            .cipher-card {
+                padding: 15px;
+            }
+
+            .cipher-icon {
+                font-size: 2rem;
+            }
+
+            .cipher-name {
+                font-size: 1.1rem;
+            }
+
+            .cipher-description {
+                font-size: 0.8rem;
+            }
+
+            .workspace-title {
+                font-size: 1.3rem;
+            }
+
+            .cipher-textarea {
+                min-height: 100px;
+                font-size: 0.85rem;
+            }
+
+            .back-btn {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Loading animation for smooth UX */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cipher-workspace.active {
+            animation: fadeInDown 0.5s ease-out;
+        }
+
+        /* Add this to your existing <style> section */
+
+        /* Enhanced mobile scroll behavior */
+        @media (max-width: 768px) {
+
+            /* Smooth scrolling for the entire page */
+            html {
+                scroll-behavior: smooth;
+                scroll-padding-top: 20px;
+            }
+
+            /* Add visual feedback when cipher is selected */
+            .cipher-card.active {
+                transform: scale(1.02);
+                box-shadow: 0 15px 35px rgba(30, 60, 114, 0.3);
+            }
+
+            /* Ensure workspace appears with animation */
+            .cipher-workspace {
+                transition: all 0.3s ease;
+                transform: translateY(10px);
+                opacity: 0;
+            }
+
+            .cipher-workspace.active {
+                transform: translateY(0);
+                opacity: 1;
+                animation: slideInUp 0.4s ease-out;
+            }
+
+            /* Slide in animation */
+            @keyframes slideInUp {
+                from {
+                    transform: translateY(20px);
+                    opacity: 0;
+                }
+
+                to {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+            }
+
+            /* Add some spacing after cipher selection */
+            .cipher-selection {
+                margin-bottom: 40px;
+            }
+
+            /* Make sure the workspace is visible */
+            .cipher-workspace.active {
+                display: block;
+                margin-top: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a href="{% url 'home' %}" class="back-btn">← Back to Dashboard</a>
+
+    <div class="container">
+        <div class="header">
+            <h1 class="project-title">🔒 Security Cipher Application</h1>
+            <p class="project-subtitle">Secure authentication system with ATBASH, Caesar, and Vigenère ciphers</p>
+        </div>
+
+        <!-- Authentication Section -->
+        <div class="auth-container" id="authContainer">
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="switchAuthTab('login')">🔓 Login</button>
+                <button class="auth-tab" onclick="switchAuthTab('register')">📝 Register</button>
+            </div>
+
+            <!-- Login Form -->
+            <div class="auth-form active" id="loginForm">
+                <div id="loginAlert"></div>
+
+                <div class="form-group">
+                    <label for="loginUsername">Username:</label>
+                    <input type="text" id="loginUsername" class="form-control" placeholder="Enter your username">
+                </div>
+
+                <div class="form-group">
+                    <label for="loginPassword">Password:</label>
+                    <div class="password-container">
+                        <input type="password" id="loginPassword" class="form-control"
+                            placeholder="Enter your password">
+                        <button type="button" class="password-toggle" onclick="togglePassword('loginPassword')"
+                            aria-label="Toggle password visibility">
+                            <!-- Eye Closed Icon (Default) -->
+                            <svg id="loginPassword-eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
+                                <path
+                                    d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
+                                <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" />
+                                <line x1="2" y1="2" x2="22" y2="22" />
+                            </svg>
+                            <!-- Eye Open Icon (Hidden) -->
+                            <svg id="loginPassword-eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" style="display: none;">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                <circle cx="12" cy="12" r="3" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <button class="btn-auth" onclick="loginUser()">🔓 Login to System</button>
+            </div>
+
+            <!-- Registration Form -->
+            <div class="auth-form" id="registerForm">
+                <div id="registerAlert"></div>
+
+                <div class="form-group">
+                    <label for="regUsername">Username:</label>
+                    <input type="text" id="regUsername" class="form-control" placeholder="At least 6 characters"
+                        oninput="validateRegistration()">
+                </div>
+
+                <div class="form-group">
+                    <label for="regPassword">Password:</label>
+                    <div class="password-container">
+                        <input type="password" id="regPassword" class="form-control"
+                            placeholder="At least 8 characters with mix of chars, numbers, symbols"
+                            oninput="validateRegistration()">
+                        <button type="button" class="password-toggle" onclick="togglePassword('regPassword')"
+                            aria-label="Toggle password visibility">
+                            <!-- Eye Closed Icon (Default) -->
+                            <svg id="regPassword-eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
+                                <path
+                                    d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
+                                <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" />
+                                <line x1="2" y1="2" x2="22" y2="22" />
+                            </svg>
+                            <!-- Eye Open Icon (Hidden) -->
+                            <svg id="regPassword-eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" style="display: none;">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                <circle cx="12" cy="12" r="3" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="password-requirements">
+                        <div class="requirement" id="req-length">✗ At least 8 characters</div>
+                        <div class="requirement" id="req-letter">✗ Contains letters</div>
+                        <div class="requirement" id="req-number">✗ Contains numbers</div>
+                        <div class="requirement" id="req-special">✗ Contains special characters (!@#$%^&*)</div>
+                        <div class="requirement" id="req-match">✗ Passwords match</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="regConfirmPassword">Confirm Password:</label>
+                    <div class="password-container">
+                        <input type="password" id="regConfirmPassword" class="form-control"
+                            placeholder="Confirm your password" oninput="validateRegistration()">
+                        <button type="button" class="password-toggle" onclick="togglePassword('regConfirmPassword')"
+                            aria-label="Toggle password visibility">
+                            <!-- Eye Closed Icon (Default) -->
+                            <svg id="regConfirmPassword-eye-closed" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
+                                <path
+                                    d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
+                                <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" />
+                                <line x1="2" y1="2" x2="22" y2="22" />
+                            </svg>
+                            <!-- Eye Open Icon (Hidden) -->
+                            <svg id="regConfirmPassword-eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" style="display: none;">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                <circle cx="12" cy="12" r="3" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <button class="btn-auth" id="registerBtn" onclick="registerUser()" disabled>📝 Create
+                    Account</button>
+            </div>
+        </div>
+
+        <!-- Main Application (Hidden initially) -->
+        <div class="main-app" id="mainApp">
+            <div class="user-welcome">
+                <h2 id="welcomeMessage">Welcome back!</h2>
+                <p>Select a cipher method to encrypt or decrypt your messages</p>
+                <button class="logout-btn" onclick="logoutUser()">🚪 Logout</button>
+            </div>
+
+            <!-- Cipher Selection -->
+            <div class="cipher-selection">
+                <div class="cipher-card" onclick="selectCipher('atbash')">
+                    <div class="cipher-icon">🔤</div>
+                    <div class="cipher-name">ATBASH</div>
+                    <div class="cipher-description">Ancient Hebrew substitution cipher</div>
+                </div>
+
+                <div class="cipher-card" onclick="selectCipher('caesar')">
+                    <div class="cipher-icon">🏛️</div>
+                    <div class="cipher-name">Caesar</div>
+                    <div class="cipher-description">Classical shift cipher</div>
+                </div>
+
+                <div class="cipher-card" onclick="selectCipher('vigenere')">
+                    <div class="cipher-icon">🔑</div>
+                    <div class="cipher-name">Vigenère</div>
+                    <div class="cipher-description">Polyalphabetic cipher</div>
+                </div>
+            </div>
+
+            <!-- ATBASH Workspace -->
+            <div class="cipher-workspace" id="atbashWorkspace">
+                <div class="workspace-header">
+                    <h3 class="workspace-title">🔤 ATBASH Cipher</h3>
+                    <p>Ancient Hebrew cipher that substitutes A↔Z, B↔Y, C↔X, etc.</p>
+                </div>
+
+                <div class="operation-tabs">
+                    <button class="operation-tab active" onclick="switchOperation('atbash', 'encrypt')">🔒
+                        Encrypt</button>
+                    <button class="operation-tab" onclick="switchOperation('atbash', 'decrypt')">🔓 Decrypt</button>
+                </div>
+
+                <div class="textarea-group">
+                    <div class="textarea-container">
+                        <label class="textarea-label">Input Text:</label>
+                        <textarea class="cipher-textarea" id="atbashInput"
+                            placeholder="Enter text to process..."></textarea>
+                    </div>
+                    <div class="textarea-container">
+                        <label class="textarea-label">Output Text:</label>
+                        <textarea class="cipher-textarea" id="atbashOutput" readonly
+                            placeholder="Result will appear here..."></textarea>
+                    </div>
+                </div>
+
+                <div class="cipher-controls">
+                    <div class="controls-row">
+                        <button class="btn-process" onclick="processAtbash()">🚀 Process Text</button>
+                        <button class="btn-clear" onclick="clearAtbash()">🧹 Clear All</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Caesar Workspace -->
+            <div class="cipher-workspace" id="caesarWorkspace">
+                <div class="workspace-header">
+                    <h3 class="workspace-title">🏛️ Caesar Cipher</h3>
+                    <p>Classical shift cipher used by Julius Caesar</p>
+                </div>
+
+                <div class="operation-tabs">
+                    <button class="operation-tab active" onclick="switchOperation('caesar', 'encrypt')">🔒
+                        Encrypt</button>
+                    <button class="operation-tab" onclick="switchOperation('caesar', 'decrypt')">🔓 Decrypt</button>
+                </div>
+
+                <div class="textarea-group">
+                    <div class="textarea-container">
+                        <label class="textarea-label">Input Text:</label>
+                        <textarea class="cipher-textarea" id="caesarInput"
+                            placeholder="Enter text to process..."></textarea>
+                    </div>
+                    <div class="textarea-container">
+                        <label class="textarea-label">Output Text:</label>
+                        <textarea class="cipher-textarea" id="caesarOutput" readonly
+                            placeholder="Result will appear here..."></textarea>
+                    </div>
+                </div>
+
+                <div class="cipher-controls">
+                    <div class="controls-row">
+                        <label for="caesarShift" style="font-weight: 600; color: #2d3748;">Shift Value:</label>
+                        <input type="number" id="caesarShift" class="form-control" value="3" min="1" max="25"
+                            style="width: 100px;">
+                        <button class="btn-process" onclick="processCaesar()">🚀 Process Text</button>
+                        <button class="btn-clear" onclick="clearCaesar()">🧹 Clear All</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vigenère Workspace -->
+            <div class="cipher-workspace" id="vigenereWorkspace">
+                <div class="workspace-header">
+                    <h3 class="workspace-title">🔑 Vigenère Cipher</h3>
+                    <p>Polyalphabetic cipher using a keyword</p>
+                </div>
+
+                <div class="operation-tabs">
+                    <button class="operation-tab active" onclick="switchOperation('vigenere', 'encrypt')">🔒
+                        Encrypt</button>
+                    <button class="operation-tab" onclick="switchOperation('vigenere', 'decrypt')">🔓
+                        Decrypt</button>
+                </div>
+
+                <div class="textarea-group">
+                    <div class="textarea-container">
+                        <label class="textarea-label">Input Text:</label>
+                        <textarea class="cipher-textarea" id="vigenereInput"
+                            placeholder="Enter text to process..."></textarea>
+                    </div>
+                    <div class="textarea-container">
+                        <label class="textarea-label">Output Text:</label>
+                        <textarea class="cipher-textarea" id="vigenereOutput" readonly
+                            placeholder="Result will appear here..."></textarea>
+                    </div>
+                </div>
+
+                <div class="cipher-controls">
+                    <div class="controls-row">
+                        <label for="vigenereKey" style="font-weight: 600; color: #2d3748;">Keyword:</label>
+                        <input type="text" id="vigenereKey" class="form-control" value="CIPHER"
+                            placeholder="Enter keyword" style="width: 200px;">
+                        <button class="btn-process" onclick="processVigenere()">🚀 Process Text</button>
+                        <button class="btn-clear" onclick="clearVigenere()">🧹 Clear All</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Application state
+        let currentUser = null;
+        let users = JSON.parse(localStorage.getItem('cipherAppUsers')) || {};
+        let loginAttempts = JSON.parse(localStorage.getItem('loginAttempts')) || {};
+        let currentCipher = null;
+        let currentOperation = 'encrypt';
+
+        // Password Toggle Function
+        function togglePassword(inputId) {
+            const passwordInput = document.getElementById(inputId);
+            const eyeClosed = document.getElementById(inputId + '-eye-closed');
+            const eyeOpen = document.getElementById(inputId + '-eye-open');
+
+            if (passwordInput.type === 'password') {
+                // Show password
+                passwordInput.type = 'text';
+                eyeClosed.style.display = 'none';
+                eyeOpen.style.display = 'block';
+            } else {
+                // Hide password
+                passwordInput.type = 'password';
+                eyeClosed.style.display = 'block';
+                eyeOpen.style.display = 'none';
+            }
+        }
+
+        // Authentication Functions
+        function switchAuthTab(tab) {
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+
+            document.querySelector(`[onclick="switchAuthTab('${tab}')"]`).classList.add('active');
+            document.getElementById(`${tab}Form`).classList.add('active');
+
+            clearAlerts();
+        }
+
+        function validateRegistration() {
+            const username = document.getElementById('regUsername').value;
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+            const registerBtn = document.getElementById('registerBtn');
+
+            console.log('Validating registration...', {
+                username: username.length,
+                password: password.length,
+                confirmPassword: confirmPassword.length,
+                passwordsMatch: password === confirmPassword
+            });
+
+            // Username validation (at least 6 characters)
+            const usernameValid = username.length >= 6;
+
+            // Password validation
+            const lengthValid = password.length >= 8;
+            const letterValid = /[a-zA-Z]/.test(password);
+            const numberValid = /[0-9]/.test(password);
+            const specialValid = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+
+            // Password match validation - IMPROVED LOGIC
+            let passwordMatch = false;
+            if (password.length > 0 && confirmPassword.length > 0) {
+                passwordMatch = password === confirmPassword;
+            }
+
+            // Update requirement indicators
+            updateRequirement('req-length', lengthValid);
+            updateRequirement('req-letter', letterValid);
+            updateRequirement('req-number', numberValid);
+            updateRequirement('req-special', specialValid);
+            updateRequirement('req-match', passwordMatch);
+
+            // Enable/disable register button - ALL CONDITIONS MUST BE TRUE
+            const allValid = usernameValid && lengthValid && letterValid && numberValid && specialValid && passwordMatch;
+
+            console.log('Validation results:', {
+                usernameValid,
+                lengthValid,
+                letterValid,
+                numberValid,
+                specialValid,
+                passwordMatch,
+                allValid
+            });
+
+            // Update button state
+            registerBtn.disabled = !allValid;
+
+            if (allValid) {
+                registerBtn.style.opacity = '1';
+                registerBtn.style.cursor = 'pointer';
+                registerBtn.style.background = 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)';
+                console.log('✅ Registration button ENABLED');
+            } else {
+                registerBtn.style.opacity = '0.6';
+                registerBtn.style.cursor = 'not-allowed';
+                registerBtn.style.background = '#94a3b8';
+                console.log('❌ Registration button DISABLED');
+            }
+        }
+
+        function updateRequirement(id, valid) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.className = `requirement ${valid ? 'valid' : 'invalid'}`;
+                let originalText = element.innerHTML;
+                if (originalText.startsWith('✓') || originalText.startsWith('✗')) {
+                    originalText = originalText.substring(2);
+                }
+                element.innerHTML = `${valid ? '✓' : '✗'} ${originalText}`;
+            }
+        }
+
+        function showAlert(containerId, type, message) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+        }
+
+        function clearAlerts() {
+            document.getElementById('loginAlert').innerHTML = '';
+            document.getElementById('registerAlert').innerHTML = '';
+        }
+
+        function registerUser() {
+            const username = document.getElementById('regUsername').value.trim();
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+
+            console.log('🚀 Register button clicked!', {
+                username,
+                passwordLength: password.length,
+                confirmPasswordLength: confirmPassword.length,
+                match: password === confirmPassword
+            });
+
+            if (!username || !password || !confirmPassword) {
+                showAlert('registerAlert', 'error', '❌ Please fill in all fields!');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showAlert('registerAlert', 'error', '❌ Passwords do not match!');
+                return;
+            }
+
+            if (users[username]) {
+                showAlert('registerAlert', 'error', '❌ Username already exists! Please choose another.');
+                return;
+            }
+
+            // Store user
+            users[username] = {
+                password: password,
+                createdAt: new Date().toISOString()
+            };
+            localStorage.setItem('cipherAppUsers', JSON.stringify(users));
+
+            showAlert('registerAlert', 'success', '✅ Account created successfully! You can now login.');
+
+            console.log('✅ User registered successfully:', username);
+            console.log('Total users now:', Object.keys(users).length);
+
+            // Clear form and switch to login
+            setTimeout(() => {
+                document.getElementById('regUsername').value = '';
+                document.getElementById('regPassword').value = '';
+                document.getElementById('regConfirmPassword').value = '';
+
+                // Reset validation
+                document.getElementById('registerBtn').disabled = true;
+                document.getElementById('registerBtn').style.opacity = '0.6';
+                document.getElementById('registerBtn').style.background = '#94a3b8';
+
+                // Reset requirement indicators
+                ['req-length', 'req-letter', 'req-number', 'req-special', 'req-match'].forEach(id => {
+                    updateRequirement(id, false);
+                });
+
+                switchAuthTab('login');
+            }, 2000);
+        }
+
+        function loginUser() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            console.log('Attempting login for:', username);
+
+            if (!username || !password) {
+                showAlert('loginAlert', 'error', '❌ Please enter both username and password!');
+                return;
+            }
+
+            // Check if user is blocked
+            const attempts = loginAttempts[username] || { count: 0, blocked: false };
+            if (attempts.blocked) {
+                showAlert('loginAlert', 'error', '🔒 Account blocked due to multiple failed attempts!');
+                return;
+            }
+
+            // Check if user exists and password is correct
+            if (!users[username] || users[username].password !== password) {
+                attempts.count++;
+
+                if (attempts.count >= 3) {
+                    attempts.blocked = true;
+                    showAlert('loginAlert', 'error', '🔒 Account blocked after 3 failed attempts!');
+                } else {
+                    const remaining = 3 - attempts.count;
+                    showAlert('loginAlert', 'warning', `⚠️ Invalid credentials! ${remaining} attempt(s) remaining.`);
+                }
+
+                loginAttempts[username] = attempts;
+                localStorage.setItem('loginAttempts', JSON.stringify(loginAttempts));
+                return;
+            }
+
+            // Successful login
+            currentUser = username;
+            loginAttempts[username] = { count: 0, blocked: false }; // Reset attempts
+            localStorage.setItem('loginAttempts', JSON.stringify(loginAttempts));
+
+            document.getElementById('welcomeMessage').textContent = `Welcome back, ${username}!`;
+            document.getElementById('authContainer').style.display = 'none';
+            document.getElementById('mainApp').style.display = 'block';
+
+            console.log(`✅ User ${username} logged in successfully`);
+        }
+
+        function logoutUser() {
+            currentUser = null;
+            currentCipher = null;
+
+            // Reset UI
+            document.getElementById('authContainer').style.display = 'block';
+            document.getElementById('mainApp').style.display = 'none';
+
+            // Clear forms
+            document.getElementById('loginUsername').value = '';
+            document.getElementById('loginPassword').value = '';
+            clearAlerts();
+
+            // Clear cipher workspaces
+            document.querySelectorAll('.cipher-workspace').forEach(w => w.classList.remove('active'));
+            document.querySelectorAll('.cipher-card').forEach(c => c.classList.remove('active'));
+
+            console.log('✅ User logged out successfully');
+        }
+
+        // Cipher Selection and Operations
+        function selectCipher(cipher) {
+            currentCipher = cipher;
+
+            // Update UI
+            document.querySelectorAll('.cipher-card').forEach(c => c.classList.remove('active'));
+            document.querySelector(`[onclick="selectCipher('${cipher}')"]`).classList.add('active');
+
+            document.querySelectorAll('.cipher-workspace').forEach(w => w.classList.remove('active'));
+            const workspace = document.getElementById(`${cipher}Workspace`);
+            workspace.classList.add('active');
+
+            console.log(`✅ Selected ${cipher.toUpperCase()} cipher`);
+
+            // Smooth scroll to workspace on mobile
+            if (window.innerWidth <= 768) {
+                setTimeout(() => {
+                    workspace.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start',
+                        inline: 'nearest'
+                    });
+                }, 100); // Small delay to ensure the workspace is visible
+            }
+        }
+
+        function switchOperation(cipher, operation) {
+            currentOperation = operation;
+
+            const workspace = document.getElementById(`${cipher}Workspace`);
+            workspace.querySelectorAll('.operation-tab').forEach(t => t.classList.remove('active'));
+            workspace.querySelector(`[onclick="switchOperation('${cipher}', '${operation}')"]`).classList.add('active');
+        }
+
+        // Cipher Algorithms
+        function atbashCipher(text) {
+            return text.split('').map(char => {
+                if (char.match(/[A-Za-z]/)) {
+                    const isUpper = char === char.toUpperCase();
+                    const code = char.toUpperCase().charCodeAt(0);
+                    const newCode = 90 - (code - 65);
+                    const newChar = String.fromCharCode(newCode);
+                    return isUpper ? newChar : newChar.toLowerCase();
+                }
+                return char;
+            }).join('');
+        }
+
+        function caesarCipher(text, shift, decrypt = false) {
+            if (decrypt) shift = 26 - shift;
+
+            return text.split('').map(char => {
+                if (char.match(/[a-zA-Z]/)) {
+                    const code = char.charCodeAt(0);
+                    const isUpper = code >= 65 && code <= 90;
+                    const base = isUpper ? 65 : 97;
+                    return String.fromCharCode(((code - base + shift) % 26) + base);
+                }
+                return char;
+            }).join('');
+        }
+
+        function vigenereCipher(text, keyword, decrypt = false) {
+            keyword = keyword.toUpperCase().replace(/[^A-Z]/g, '');
+            if (!keyword) keyword = 'CIPHER';
+
+            let result = '';
+            let keyIndex = 0;
+
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+
+                if (char.match(/[A-Za-z]/)) {
+                    const isUpper = char === char.toUpperCase();
+                    const charCode = char.toUpperCase().charCodeAt(0) - 65;
+                    const keyChar = keyword[keyIndex % keyword.length];
+                    const keyCode = keyChar.charCodeAt(0) - 65;
+
+                    let newCharCode;
+                    if (decrypt) {
+                        newCharCode = (charCode - keyCode + 26) % 26;
+                    } else {
+                        newCharCode = (charCode + keyCode) % 26;
+                    }
+
+                    const newChar = String.fromCharCode(newCharCode + 65);
+                    result += isUpper ? newChar : newChar.toLowerCase();
+                    keyIndex++;
+                } else {
+                    result += char;
+                }
+            }
+
+            return result;
+        }
+
+        // Process Functions
+        function processAtbash() {
+            const input = document.getElementById('atbashInput').value;
+            if (!input.trim()) {
+                alert('⚠️ Please enter text to process!');
+                return;
+            }
+
+            const result = atbashCipher(input);
+            document.getElementById('atbashOutput').value = result;
+
+            console.log(`✅ ATBASH ${currentOperation}: "${input}" → "${result}"`);
+        }
+
+        function processCaesar() {
+            const input = document.getElementById('caesarInput').value;
+            const shift = parseInt(document.getElementById('caesarShift').value) || 3;
+
+            if (!input.trim()) {
+                alert('⚠️ Please enter text to process!');
+                return;
+            }
+
+            const result = caesarCipher(input, shift, currentOperation === 'decrypt');
+            document.getElementById('caesarOutput').value = result;
+
+            console.log(`✅ Caesar ${currentOperation} (shift ${shift}): "${input}" → "${result}"`);
+        }
+
+        function processVigenere() {
+            const input = document.getElementById('vigenereInput').value;
+            const keyword = document.getElementById('vigenereKey').value.trim() || 'CIPHER';
+
+            if (!input.trim()) {
+                alert('⚠️ Please enter text to process!');
+                return;
+            }
+
+            const result = vigenereCipher(input, keyword, currentOperation === 'decrypt');
+            document.getElementById('vigenereOutput').value = result;
+
+            console.log(`✅ Vigenère ${currentOperation} (key: ${keyword}): "${input}" → "${result}"`);
+        }
+
+        // Clear Functions
+        function clearAtbash() {
+            document.getElementById('atbashInput').value = '';
+            document.getElementById('atbashOutput').value = '';
+        }
+
+        function clearCaesar() {
+            document.getElementById('caesarInput').value = '';
+            document.getElementById('caesarOutput').value = '';
+        }
+
+        function clearVigenere() {
+            document.getElementById('vigenereInput').value = '';
+            document.getElementById('vigenereOutput').value = '';
+        }
+
+        // Initialize application
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log('🔒 Security Cipher Application initialized!');
+            console.log('👥 Registered users:', Object.keys(users).length);
+
+            // Don't call validateRegistration() immediately - let users start typing
+        });
+    </script>
+</body>
+
+</html>

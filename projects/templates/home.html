@@ -1,0 +1,945 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - IT-312 Projects</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .dashboard-header {
+            background: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Enhanced Animated Logo Styles */
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #150546;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        /* Logo Icon with Rotation Animation */
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #6552ff 0%, #5a47e6 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 700;
+            animation: iconPulse 3s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 4s ease-in-out infinite;
+        }
+
+        /* Text Animation */
+        .logo-text {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-main {
+            background: linear-gradient(135deg, #6552ff 0%, #5a47e6 50%, #150546 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 4s ease-in-out infinite;
+            background-size: 200% 200%;
+        }
+
+        .logo-subtitle {
+            color: #718096;
+            font-size: 0.9rem;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .logo-subtitle::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #6552ff, #5a47e6);
+            animation: underlineExpand 3s ease-in-out infinite;
+        }
+
+        /* Badge Animation */
+        .logo-badge {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+            animation: badgeBounce 2s ease-in-out infinite;
+            box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+        }
+
+        /* Keyframe Animations */
+        @keyframes iconPulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(101, 82, 255, 0.4);
+            }
+
+            50% {
+                transform: scale(1.1);
+                box-shadow: 0 0 0 10px rgba(101, 82, 255, 0);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%) translateY(-100%) rotate(45deg);
+            }
+
+            50% {
+                transform: translateX(100%) translateY(100%) rotate(45deg);
+            }
+
+            100% {
+                transform: translateX(-100%) translateY(-100%) rotate(45deg);
+            }
+        }
+
+        @keyframes gradientShift {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        @keyframes underlineExpand {
+
+            0%,
+            100% {
+                width: 0;
+            }
+
+            50% {
+                width: 100%;
+            }
+        }
+
+        @keyframes badgeBounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-3px);
+            }
+        }
+
+        /* Typing Animation for Logo Text */
+        .typing-text {
+            overflow: hidden;
+            border-right: 2px solid #6552ff;
+            white-space: nowrap;
+            animation: typing 4s steps(25, end) infinite, blink-caret 1s step-end infinite;
+        }
+
+        @keyframes typing {
+
+            0%,
+            90%,
+            100% {
+                width: 100%;
+            }
+
+            45% {
+                width: 0;
+            }
+        }
+
+        @keyframes blink-caret {
+
+            0%,
+            50% {
+                border-color: transparent;
+            }
+
+            51%,
+            100% {
+                border-color: #6552ff;
+            }
+        }
+
+        /* Hover Effects */
+        .logo:hover .logo-icon {
+            animation-play-state: paused;
+            transform: rotate(360deg) scale(1.1);
+        }
+
+        .logo:hover .logo-badge {
+            transform: scale(1.2) rotate(-5deg);
+        }
+
+        /* Rest of your existing styles remain the same */
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-cre {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .profile-info {
+            text-align: right;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #150546;
+            margin-bottom: 2px;
+        }
+
+        .user-email {
+            font-size: 0.9rem;
+            color: #718096;
+        }
+
+        .profile-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .logout-btn {
+            background: #e53e3e;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 0.9rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .logout-btn:hover {
+            background: #c53030;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(229, 62, 62, 0.4);
+        }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .welcome-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .welcome-title {
+            font-size: 2.5rem;
+            color: #150546;
+            margin-bottom: 15px;
+        }
+
+        .projects-section {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: #150546;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+        }
+
+        .project-card {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .project-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .project-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+        }
+
+        .icon-api {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .icon-automation {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .icon-otp {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .icon-encryption {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .icon-security {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .icon-design {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+
+        .project-title {
+            font-size: 1.3rem;
+            color: #150546;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .project-description {
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 25px;
+        }
+
+        .tech-tag {
+            background: #e2e8f0;
+            color: #4a5568;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .project-link {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #6552ff;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .project-link:hover {
+            background: #5a47e6;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(101, 82, 255, 0.4);
+        }
+
+        .messages-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            max-width: 400px;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.5s ease;
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border-left: 4px solid #28a745;
+        }
+
+        .alert.fade-out {
+            opacity: 0;
+            transform: translateX(100%);
+        }
+
+        /* Logout Confirmation Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .logout-modal {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            color: #150546;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .modal-message {
+            color: #4a5568;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .btn-confirm {
+            background: #e53e3e;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn-confirm:hover {
+            background: #c53030;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(229, 62, 62, 0.4);
+        }
+
+        .btn-cancel {
+            background: #e2e8f0;
+            color: #4a5568;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn-cancel:hover {
+            background: #cbd5e0;
+            transform: translateY(-2px);
+        }
+
+        /* Loading state for logout button */
+        .logout-btn.loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .logout-btn.loading::after {
+            content: '';
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            margin-left: 8px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 885px) {
+
+            .logo {
+                display: none;
+            }
+
+            .user-profile {
+                display: flex;
+                justify-content: space-between;
+
+                width: 100%;
+            }
+
+            .user-cre {
+                flex-direction: row-reverse;
+            }
+
+            .profile-info {
+                text-align: left;
+
+            }
+
+            .profile-info .user-name {
+                margin: 0;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .project-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Success Messages -->
+    {% if messages %}
+    <div class="messages-container">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}" id="alert-{{ forloop.counter }}">
+            {{ message }}
+            <button onclick="hideAlert('alert-{{ forloop.counter }}')"
+                style="float: right; background: none; border: none; font-size: 18px; cursor: pointer;"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Logout Confirmation Modal -->
+    <div class="modal-overlay" id="logoutModal">
+        <div class="logout-modal">
+            <div class="modal-icon">🚪</div>
+            <h3 class="modal-title">Confirm Logout</h3>
+            <p class="modal-message">
+                Are you sure you want to sign out of your account?<br>
+                You'll need to log in again to access your projects.
+            </p>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeLogoutModal()">Stay Logged In</button>
+                <button class="btn-confirm" onclick="confirmLogout()">Yes, Sign Out</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="header-container">
+            <!-- Enhanced Animated Logo -->
+            <div class="logo" onclick="animateLogo()">
+                <!-- <div class="logo-icon">
+                    <span>IT</span>
+                </div> -->
+                <div class="logo-text">
+                    <span class="logo-main typing-text">IT-312 Midterm Portfolio</span>
+                    <!-- <span class="logo-badge">NEW</span> -->
+                </div>
+            </div>
+
+            <div class="user-profile">
+                <div class="user-cre">
+                    <div class="profile-info">
+                        <div class="user-name">{{ user.first_name }} {{ user.last_name }}</div>
+                        <div class="user-email">{{ user.email }}</div>
+                    </div>
+                    <div class="profile-avatar">
+                        {{ user.first_name|first|upper }}{{ user.last_name|first|upper }}
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="showLogoutModal()" id="logoutBtn">
+                    Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Welcome Section -->
+        <section class="welcome-section">
+            <h1 class="welcome-title">Welcome, {{ user.first_name }}! </h1>
+            <p>Explore an IT-312 Integrative Programming midterm projects. Each project demonstrates different aspects
+                of web development, API integration, security, and automation.</p>
+        </section>
+
+        <!-- Projects Section -->
+        <section class="projects-section">
+            <h2 class="section-title">Our Midterm Projects Collection</h2>
+            <div class="projects-grid">
+
+                <!-- Project 1: Fun Facts API -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-icon icon-api">🌐</div>
+                        <h3 class="project-title">Fun Facts API System</h3>
+                    </div>
+                    <p class="project-description">
+                        A simple system that calls external APIs to fetch and display interesting fun facts.
+                        Demonstrates basic API integration and JSON data handling.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">API Integration</span>
+                        <span class="tech-tag">JSON</span>
+                        <span class="tech-tag">HTTP Requests</span>
+                    </div>
+                    <a href="{% url 'fun_facts_api' %}" class="project-link">Explore Project →</a>
+                </div>
+
+                <!-- Project 2: Scripting Automation -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-icon icon-automation">⚡</div>
+                        <h3 class="project-title">Email Automation Script</h3>
+                    </div>
+                    <p class="project-description">
+                        Automated system that uses Fun Facts API and sends daily emails with interesting facts to a list
+                        of recipients. Demonstrates scripting and automation concepts.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">Email Automation</span>
+                        <span class="tech-tag">Scheduling</span>
+                        <span class="tech-tag">SMTP</span>
+                    </div>
+                    <a href="{% url 'scripting_automation' %}" class="project-link">Explore Project →</a>
+                </div>
+
+                <!-- Project 3: Login OTP QR -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-icon icon-otp">🔐</div>
+                        <h3 class="project-title">OTP & QR Authentication</h3>
+                    </div>
+                    <p class="project-description">
+                        Secure authentication system using Google Authenticator with QR codes. After login, fetches
+                        jokes from API and displays them with QR code generation.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Google Authenticator</span>
+                        <span class="tech-tag">QR Codes</span>
+                        <span class="tech-tag">OTP</span>
+                        <span class="tech-tag">Joke API</span>
+                    </div>
+                    <a href="{% url 'login_otp_qr' %}" class="project-link">Explore Project →</a>
+                </div>
+
+                <!-- Project 4: Joke Encryption QR -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-icon icon-encryption">😂</div>
+                        <h3 class="project-title">Joke Encryption with QR</h3>
+                    </div>
+                    <p class="project-description">
+                        Fetches jokes from API and encrypts them using ATBASH, Caesar, and Vigenere ciphers. The
+                        encrypted messages are then converted to QR code images.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Encryption</span>
+                        <span class="tech-tag">QR Codes</span>
+                        <span class="tech-tag">Joke API</span>
+                        <span class="tech-tag">Ciphers</span>
+                    </div>
+                    <a href="{% url 'joke_encryption_qr' %}" class="project-link">Explore Project →</a>
+                </div>
+
+                <!-- Project 5: Security Programming -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-icon icon-security">🛡️</div>
+                        <h3 class="project-title">Security Programming Suite</h3>
+                    </div>
+                    <p class="project-description">
+                        Complete security application with user registration, login validation, and multiple
+                        encryption/decryption ciphers. Includes password policies and attempt limiting.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Security</span>
+                        <span class="tech-tag">Authentication</span>
+                        <span class="tech-tag">Encryption</span>
+                        <span class="tech-tag">User Management</span>
+                    </div>
+                    <a href="{% url 'security_programming' %}" class="project-link">Explore Project →</a>
+                </div>
+
+                <!-- Project 6: API Design -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-icon icon-design">📋</div>
+                        <h3 class="project-title">Django API Design</h3>
+                    </div>
+                    <p class="project-description">
+                        Comprehensive API design documentation and implementation using Django framework. Showcases
+                        RESTful API principles and web service architecture.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Django</span>
+                        <span class="tech-tag">REST API</span>
+                        <span class="tech-tag">Documentation</span>
+                        <span class="tech-tag">Web Services</span>
+                    </div>
+                    <a href="https://drive.google.com/drive/folders/1-x3A2izTG8q7OEFdJSivVQOPYCFj9GIn?usp=drive_link"
+                        target="_blank" class="project-link">View Documentation →</a>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Auto-hide alerts after 3 seconds
+        document.addEventListener('DOMContentLoaded', function () {
+            const alerts = document.querySelectorAll('.alert');
+
+            alerts.forEach(function (alert, index) {
+                // Auto-hide after 3 seconds
+                setTimeout(function () {
+                    hideAlert(alert.id);
+                }, 2000);
+            });
+        });
+
+        // Function to hide alert with animation
+        function hideAlert(alertId) {
+            const alert = document.getElementById(alertId);
+            if (alert) {
+                alert.classList.add('fade-out');
+
+                // Remove element from DOM after animation completes
+                setTimeout(function () {
+                    alert.remove();
+                }, 500); // Wait for CSS transition to complete
+            }
+        }
+
+        // Logo Animation Function
+        function animateLogo() {
+            const logoIcon = document.querySelector('.logo-icon');
+            const logoBadge = document.querySelector('.logo-badge');
+
+            // Trigger special animation on click
+            logoIcon.style.animation = 'none';
+            logoBadge.style.animation = 'none';
+
+            setTimeout(() => {
+                logoIcon.style.animation = 'iconPulse 0.6s ease-in-out';
+                logoBadge.style.animation = 'badgeBounce 0.6s ease-in-out';
+            }, 100);
+
+            console.log('🎨 Logo animation triggered!');
+        }
+
+        // Logout Modal Functions
+        function showLogoutModal() {
+            const modal = document.getElementById('logoutModal');
+            modal.classList.add('active');
+            document.addEventListener('keydown', handleEscapeKey);
+            console.log('🚪 Logout confirmation modal opened');
+        }
+
+        function closeLogoutModal() {
+            const modal = document.getElementById('logoutModal');
+            modal.classList.remove('active');
+            document.removeEventListener('keydown', handleEscapeKey);
+            console.log('❌ Logout cancelled by user');
+        }
+
+        function handleEscapeKey(event) {
+            if (event.key === 'Escape') {
+                closeLogoutModal();
+            }
+        }
+
+        function confirmLogout() {
+            const logoutBtn = document.getElementById('logoutBtn');
+            const modal = document.getElementById('logoutModal');
+
+            console.log('✅ Logout confirmed - Processing...');
+
+            logoutBtn.classList.add('loading');
+            logoutBtn.innerHTML = '🚪 Signing Out...';
+            modal.classList.remove('active');
+            showLogoutMessage();
+
+            setTimeout(function () {
+                window.location.href = "{% url 'login' %}";
+            }, 1000);
+        }
+
+        function showLogoutMessage() {
+            const messagesContainer = document.querySelector('.messages-container');
+            if (!messagesContainer) {
+                const container = document.createElement('div');
+                container.className = 'messages-container';
+                document.body.appendChild(container);
+            }
+
+            const logoutAlert = document.createElement('div');
+            logoutAlert.className = 'alert alert-warning';
+            logoutAlert.innerHTML = 'Signing you out... Redirecting to login page.';
+            logoutAlert.style.background = '#fff3cd';
+            logoutAlert.style.color = '#856404';
+            logoutAlert.style.borderLeft = '4px solid #ffc107';
+
+            document.querySelector('.messages-container').appendChild(logoutAlert);
+        }
+
+        // Close modal when clicking outside of it
+        document.addEventListener('click', function (event) {
+            const modal = document.getElementById('logoutModal');
+            if (event.target === modal) {
+                closeLogoutModal();
+            }
+        });
+    </script>
+</body>
+
+</html>

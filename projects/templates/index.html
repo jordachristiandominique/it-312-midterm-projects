@@ -1,0 +1,304 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT-312 Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/animation.css' %}">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="{% static 'images/Gemini_Generated_Image_llgrffllgrffllgr.png' %}" alt="Logo" height="40">
+                <span>IT-312 Projects</span>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><img src="{% static 'images/project.png' %}" alt="Project Icon" height="25">
+                        <a href="#projects">Projects</a>
+                    </li>
+                    <li><img src="{% static 'images/about.png' %}" alt="About Icon" height="25">
+                        <a href="#intro">About</a>
+                    </li>
+                    <li><img src="{% static 'images/contacts.png' %}" alt="Contact Icon" height="25">
+                        <a href="#contact-info">Contact</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="nav-forms">
+                <a href="{% url 'login' %}" class="btn btn-login">Login</a>
+                <a href="{% url 'register' %}" class="btn btn-register">Register</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>One place for all of our <br> <span class="highlight" id="typewriter">midterm</span> projects</h1>
+            <p>Showcasing the projects we've built this semester</p>
+            <div class="cta-buttons">
+                <a href="#projects" class="btn btn-primary">View Our Work</a>
+                <a href="{% url 'login' %}" class="btn btn-secondary">Get In Touch</a>
+            </div>
+        </div>
+
+
+        <div class="tech-slider">
+            <div class="tech-slider-content">
+                <div class="tech-item"><img src="{% static 'images/php.png' %}" alt="PHP" height="30"><span>PHP</span>
+                </div>
+                <div class="tech-item"><img src="{% static 'images/python.png' %}" alt="Python"
+                        height="30"><span>Python</span></div>
+                <div class="tech-item"><img src="{% static 'images/django.png' %}" alt="Django"
+                        height="30"><span>Django</span></div>
+                <div class="tech-item"><img src="{% static 'images/html.png' %}" alt="HTML"
+                        height="30"><span>HTML</span></div>
+                <div class="tech-item"><img src="{% static 'images/css.png' %}" alt="CSS" height="30"><span>CSS</span>
+                </div>
+                <div class="tech-item"><img src="{% static 'images/js.png' %}" alt="JavaScript"
+                        height="30"><span>JavaScript</span></div>
+                <div class="tech-item"><img src="{% static 'images/api.png' %}" alt="REST API" height="30"><span>REST
+                        API</span></div>
+
+
+                <div class="tech-item"><img src="{% static 'images/php.png' %}" alt="PHP" height="30"><span>PHP</span>
+                </div>
+                <div class="tech-item"><img src="{% static 'images/python.png' %}" alt="Python"
+                        height="30"><span>Python</span></div>
+                <div class="tech-item"><img src="{% static 'images/django.png' %}" alt="Django"
+                        height="30"><span>Django</span></div>
+                <div class="tech-item"><img src="{% static 'images/html.png' %}" alt="HTML"
+                        height="30"><span>HTML</span></div>
+                <div class="tech-item"><img src="{% static 'images/css.png' %}" alt="CSS" height="30"><span>CSS</span>
+                </div>
+                <div class="tech-item"><img src="{% static 'images/js.png' %}" alt="JavaScript"
+                        height="30"><span>JavaScript</span></div>
+                <div class="tech-item"><img src="{% static 'images/api.png' %}" alt="REST API" height="30"><span>REST
+                        API</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="intro-section content-section" id="intro">
+        <div class="section-container">
+            <h2>Welcome to Our Portfolio</h2>
+            <p>Welcome to our IT-312 Midterm Project Compilation. This site was created to organize and showcase the
+                projects we developed throughout the semester as part of our course requirements.</p>
+        </div>
+    </section>
+
+
+    <section class="team-section content-section" id="team">
+        <div class="section-container">
+            <h2>Meet Our Group</h2>
+            <p class="section-subtitle">Three IT students working together on their IT-312 projects</p>
+
+            <div class="team-grid">
+                <div class="team-card">
+                    <img src="{% static 'images/queenie.png' %}" alt="Queenie Sumalinog">
+                    <h3 class="team-name">Queenie Sumalinog</h3>
+                </div>
+
+                <div class="team-card">
+                    <img src="{% static 'images/cd.png' %}" alt="Christian Jorda">
+                    <h3 class="team-name">Christian Jorda</h3>
+                </div>
+
+                <div class="team-card">
+                    <img src="{% static 'images/md.jpg' %}" alt="Mariel Derla">
+                    <h3 class="team-name">Mariel Derla</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="goal-section content-section">
+        <div class="section-container">
+            <h2>Our Goal</h2>
+            <p>The goal of this portfolio is to present our collective works in one system. It allows us to compile,
+                organize, and share our projects in a clear and accessible way.</p>
+        </div>
+    </section>
+
+
+    <section class="projects-overview content-section" id="projects">
+        <div class="section-container">
+            <h2>Project Overview</h2>
+            <p style="text-align: center; margin-bottom: 40px; color: #4a5568; font-size: 1.1rem;">Our projects this
+                semester include:</p>
+
+            <div class="projects-list">
+                <div class="project-item">
+                    <div class="project-icon">🌐</div>
+                    <h3>External API Integration</h3>
+                    <p>Simple systems that call external APIs to fetch and display data from various web services.</p>
+                </div>
+
+                <div class="project-item">
+                    <div class="project-icon">⚡</div>
+                    <h3>Process Automation</h3>
+                    <p>Automated workflows and processes to streamline repetitive tasks and improve efficiency.</p>
+                </div>
+
+                <div class="project-item">
+                    <div class="project-icon">📱</div>
+                    <h3>QR Code Authentication</h3>
+                    <p>Secure authentication system using QR codes for quick and safe user verification.</p>
+                </div>
+
+                <div class="project-item">
+                    <div class="project-icon">😂</div>
+                    <h3>JokeApi Encryption & QR Codes</h3>
+                    <p>A system that fetches a joke from an API, encrypts it using Atbash, Caesar, and Vigenère ciphers,
+                        and converts the results into QR code images.</p>
+                </div>
+
+                <div class="project-item">
+                    <div class="project-icon">🔐</div>
+                    <h3>Encryption with QR Codes</h3>
+                    <p>Advanced security implementation combining encryption techniques with QR code technology.</p>
+                </div>
+
+                <div class="project-item">
+                    <div class="project-icon">🔧</div>
+                    <h3>Django API Design</h3>
+                    <p>Designing a simplified API using Django framework for robust web application development.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <footer class="footer" id="contact-info">
+        <div class="footer-container">
+            <div class="footer-content">
+
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <span>IT-312 Projects</span>
+                    </div>
+                    <div class="project-info">
+                        <h4>Project Information</h4>
+                        <p>"IT-312 Midterm Project Compilation"</p>
+                        <p>1st Semester, SY 2025-2026</p>
+                    </div>
+                </div>
+
+
+                <div class="footer-section">
+                    <h3>Team Members</h3>
+                    <ul>
+                        <li>Developed by:</li>
+                        <li>Christian Dominique Jorda<br>cd@gmail.com<br>09999999999</li>
+                        <li>Queenie Jill Sumalinog<br>queenie@gmail.com<br>09999999998</li>
+                        <li>Mariel Derla<br>mariel@gmail.com<br>09999999997</li>
+                    </ul>
+                </div>
+
+
+                <div class="footer-section">
+                    <h3>School Information</h3>
+                    <p>Bachelor of Science in Information Technology</p>
+                    <p>Davao del Norte State College</p>
+                    <br>
+                    <p><strong>Course:</strong> IT-312 Integrative Programming</p>
+                    <p><strong>Focus:</strong> Web Development & API Integration</p>
+                </div>
+            </div>
+
+
+            <div class="footer-bottom">
+                <p>© 2025 IT-312 Project Compilation. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+
+        const words = ['midterm', 'integration', 'authentication', 'automation', 'encryption', 'innovative', 'django'];
+        let currentWordIndex = 0;
+        let currentCharIndex = 0;
+        let isDeleting = false;
+        const typewriterElement = document.getElementById('typewriter');
+        const typingSpeed = 80;
+        const deletingSpeed = 120;
+        const pauseTime = 2000;
+
+        function typeWriter() {
+            const currentWord = words[currentWordIndex];
+
+            if (isDeleting) {
+
+                typewriterElement.textContent = currentWord.substring(0, currentCharIndex - 1);
+                currentCharIndex--;
+
+                if (currentCharIndex === 0) {
+                    isDeleting = false;
+                    currentWordIndex = (currentWordIndex + 1) % words.length;
+                    setTimeout(typeWriter, 200);
+                    return;
+                }
+
+                setTimeout(typeWriter, deletingSpeed);
+            } else {
+
+                typewriterElement.textContent = currentWord.substring(0, currentCharIndex + 1);
+                currentCharIndex++;
+
+                if (currentCharIndex === currentWord.length) {
+                    isDeleting = true;
+                    setTimeout(typeWriter, pauseTime);
+                    return;
+                }
+
+                setTimeout(typeWriter, typingSpeed);
+            }
+        }
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(typeWriter, 1000); // Wait 1 second before starting
+        });
+
+
+        const observer = new IntersectionObserver(function (entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        }, { threshold: 0.1 });
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.content-section').forEach(el => observer.observe(el));
+            document.querySelectorAll('.team-card').forEach(el => observer.observe(el));
+            document.querySelectorAll('.project-item').forEach(el => observer.observe(el));
+            document.querySelectorAll('.footer-section').forEach(el => observer.observe(el));
+
+
+            document.querySelectorAll('.team-card img').forEach(img => {
+                img.addEventListener('load', function () {
+                    this.classList.add('loaded');
+                });
+                if (img.complete) {
+                    img.classList.add('loaded');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
