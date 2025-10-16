@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),  # Add this for allauth
     path('', include('projects.urls')),
+    
 ]
 
 if settings.DEBUG:
