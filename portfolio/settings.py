@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 import os   
 from pathlib import Path
+import sys
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -48,7 +49,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-   'whitenoise.middleware.WhiteNoiseMiddleware',  # Add this
+   #'whitenoise.middleware.WhiteNoiseMiddleware',  # Add this
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -175,10 +176,24 @@ SOCIALACCOUNT_PROVIDERS = {
         'EXCHANGE_TOKEN': True,
         'VERIFIED_EMAIL': False,
         'VERSION': 'v13.0',
-        'APP': {
-            'client_id': os.environ.get('FACEBOOK_CLIENT_ID', ''),
-            'secret': os.environ.get('FACEBOOK_CLIENT_SECRET', ''),
-        }
+       
     }
 }
 
+
+# Smart security settings - works for both local and production
+if DEBUG and 'runserver' in sys.argv:
+    # Local development - allow HTTP
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+    print("🔧 Development mode: HTTP enabled for localhost")
+else:
+    # Production - enable HTTPS security (Render)
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    print("🔒 Production mode: HTTPS security enabled")
